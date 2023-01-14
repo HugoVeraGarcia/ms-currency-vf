@@ -7,21 +7,25 @@ from ..models import Currency
 class SetupController:
 
     def generate_auto_currencies(request):
+        # guardo la data enviada por el body, debería ser "generate":True
         generate_data = request.data
 
         try:
+            # guarda el valor en generate
             generate=generate_data['generate']
         except Exception as e:
             print(e)
             return Response({'result': 'unexpected request'}, status=status.HTTP_400_BAD_REQUEST)
         
+        # si generate es True
         if generate:
+            # ejecuta método que finalmente puebla la tabla Currency
             SetupController._initialize_generate_currencies()
             return Response({'result': 'you have generated EUR, USD, JPY, GBP, CHF, AUD, CAD y NZD. currencies'}, status=status.HTTP_201_CREATED)
+        # si no ejecutó con éxito, devuelve el resultado
         return Response({'result': 'unexpected request'}, status=status.HTTP_400_BAD_REQUEST)
     
     def _initialize_generate_currencies():
-        
         EUR=Currency.objects.create(
                 name='EUR',
                 exchange=1.08,

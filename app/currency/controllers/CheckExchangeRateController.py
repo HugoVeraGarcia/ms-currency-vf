@@ -33,7 +33,6 @@ class CheckExchangeRateController:
 
         return Response({
             'result': 'success',
-            'documentation': "http://127.0.0.1:8000/swagger/",
             'current_time': datetime.datetime.now(),
             'base': base_upper,
             'quote': quote_upper,

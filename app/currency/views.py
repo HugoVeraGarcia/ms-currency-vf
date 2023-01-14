@@ -1,28 +1,24 @@
-
-
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-
 from .models import Track_Fee
-from .serializers import (
-    CurrencySerializer, Track_Fee_Formatted_Serializer, setup_Serializer)
-
+from .serializers import (CurrencySerializer, Track_Fee_Formatted_Serializer, setup_Serializer)
 
 from .controllers.CurrencyController import CurrencyController
 from .controllers.SetupController import SetupController
 from .controllers.CheckExchangeRateController import CheckExchangeRateController
 from .controllers.ChangeCurrencyController import ChangeCurrencyController, CurrencyController
 
-
+# view para poblar la bd currency
 class SetupView(GenericAPIView):
     serializer_class = setup_Serializer
 
     def post(self, request, *args, **kwargs):
+        # ejecutar el método que va a poblar la bd currency
         return SetupController.generate_auto_currencies(request)
 
-
+# view para obtener todas las monedas
 class CurrenciesView(GenericAPIView):
     serializer_class = CurrencySerializer
 
@@ -32,14 +28,14 @@ class CurrenciesView(GenericAPIView):
     def get(self, request, name=None):
         return CurrencyController.list_or_read_currency(request, name)
 
-
+# view para comparar monedas
 class Check_exchange_rateView(GenericAPIView):
 
     def get(self, request, base, quote):
 
         return CheckExchangeRateController.base_to_quote_details(request, base, quote)
 
-
+# view para realizar una transacción
 class Change_currencyView(APIView):
     serializer_class = Track_Fee_Formatted_Serializer
 
@@ -47,9 +43,7 @@ class Change_currencyView(APIView):
 
         return ChangeCurrencyController.exchange(request)
 
-# View encargada de listar todas las transacciones de cambios de divisas
-
-
+# view para obtener el seguimiento de las operaciones
 class TrackFeeView(GenericAPIView):
 
     def get(self, request, id=None):
